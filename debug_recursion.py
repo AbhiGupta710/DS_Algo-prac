@@ -1,21 +1,26 @@
-def bestsum(trg, arr):
-    if trg == 0:
-        return []
-    if trg < 0:
-        return None
-    shortest = None
-    for i in arr:
+class Solution:
+    def generateParenthesis(self, n: int):
 
-        rem = trg - i
-        rem_comb = bestsum(rem, arr)
+        stack = []
+        res = []
+        def backTrack(openN, closeN):
 
-        if rem_comb != None:
-            ans = rem_comb + [i]
+            if openN == closeN == n:
+                res.append(''.join(stack))
+                return
 
-            if shortest == None or len(ans) < len(shortest):
-                shortest = ans
+            if openN < n:
+                stack.append('(')
+                backTrack(openN+1, closeN)
+                stack.pop()
 
-    return shortest
+            if closeN < openN:
+                stack.append(')')
+                backTrack(openN, closeN+1)
+                stack.pop()
 
+        backTrack(0, 0)
+        return res
 
-print(bestsum(7, [4, 3, 2]))
+obj = Solution()
+obj.generateParenthesis(3)
