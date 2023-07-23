@@ -1,26 +1,28 @@
 class Solution:
-    def generateParenthesis(self, n: int):
+    def maxProfit(self, prices) -> int:
 
-        stack = []
-        res = []
-        def backTrack(openN, closeN):
+        left, right = 0, len(prices) - 1
+        buy, sell = 0, len(prices) - 1
 
-            if openN == closeN == n:
-                res.append(''.join(stack))
-                return
+        for i in range(len(prices)):
+            print(buy, sell, '====', left, right)
 
-            if openN < n:
-                stack.append('(')
-                backTrack(openN+1, closeN)
-                stack.pop()
+            if (prices[right] > prices[sell]) and (right > buy):
+                print('upd sell')
+                sell = right
 
-            if closeN < openN:
-                stack.append(')')
-                backTrack(openN, closeN+1)
-                stack.pop()
+            if (prices[left] < prices[buy]) and (left < sell):
+                print('upd', 'buy')
+                buy = left
 
-        backTrack(0, 0)
-        return res
+            left += 1
+            right -= 1
+        print(prices[sell], prices[buy])
+        if (prices[sell] - prices[buy]) > 0:
+            return prices[sell] - prices[buy]
+        return 0
+
 
 obj = Solution()
-obj.generateParenthesis(3)
+print(obj.maxProfit([1, 4, 2]), 'ans')
+print(obj.maxProfit([3, 2, 6, 5, 0, 3]), 'ans')
